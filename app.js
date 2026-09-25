@@ -645,14 +645,74 @@
   }
 
   // =========================================================================
-  // ROMANTIC MUSIC & AUDIO PLAYER
+  // ROMANTIC MUSIC & LOVE SONGS PLAYLIST ENGINE (6 Curated Love Songs)
   // =========================================================================
+  const LOVE_PLAYLIST = [
+    {
+      id: 'perfect',
+      title: 'Perfect',
+      artist: 'Ed Sheeran',
+      subtitle: 'All-Time Romantic Classic',
+      file: 'audio/perfect_ed_sheeran.mp3',
+      duration: '4:23',
+      badge: 'Favorite'
+    },
+    {
+      id: 'kesariya',
+      title: 'Kesariya',
+      artist: 'Arijit Singh • Brahmāstra',
+      subtitle: 'Soulful Bollywood Romance',
+      file: 'audio/kesariya_arijit_singh.mp3',
+      duration: '4:25',
+      badge: 'Trending Love'
+    },
+    {
+      id: 'until_i_found_you',
+      title: 'Until I Found You',
+      artist: 'Stephen Sanchez',
+      subtitle: 'Vintage Romantic Ballad',
+      file: 'audio/until_i_found_you.mp3',
+      duration: '2:58',
+      badge: 'Sweet & Pure'
+    },
+    {
+      id: 'tum_hi_ho',
+      title: 'Tum Hi Ho',
+      artist: 'Arijit Singh • Aashiqui 2',
+      subtitle: 'Heartfelt Passionate Ballad',
+      file: 'audio/tum_hi_ho_arijit_singh.mp3',
+      duration: '4:27',
+      badge: 'Heartfelt'
+    },
+    {
+      id: 'tere_bina',
+      title: 'Tere Bina',
+      artist: 'A.R. Rahman • Guru',
+      subtitle: 'Eternal Sufi Masterpiece',
+      file: 'audio/tere_bina_ar_rahman.mp3',
+      duration: '5:08',
+      badge: 'Soulful'
+    },
+    {
+      id: 'cant_help_falling_in_love',
+      title: "Can't Help Falling in Love",
+      artist: 'Kina Grannis • Acoustic',
+      subtitle: 'Tender Acoustic Guitar',
+      file: 'audio/cant_help_falling_in_love.mp3',
+      duration: '3:21',
+      badge: 'Acoustic'
+    }
+  ];
+
+  let currentSongIndex = 0;
+
   function setupAudio() {
     cardAudio = document.getElementById('cardAudio');
     volumeSlider = document.getElementById('volumeSlider');
 
     if (cardAudio) {
       cardAudio.volume = 0.85;
+      cardAudio.addEventListener('ended', nextSong);
     }
 
     if (volumeSlider) {
@@ -661,17 +721,55 @@
       });
     }
 
+    // Prev / Play / Next track controls
     const btnPlayPause = document.getElementById('btnPlayPauseSong');
-    if (btnPlayPause) {
-      btnPlayPause.addEventListener('click', toggleSong);
+    if (btnPlayPause) btnPlayPause.addEventListener('click', toggleSong);
+
+    const btnPrev = document.getElementById('btnPrevSong');
+    if (btnPrev) btnPrev.addEventListener('click', prevSong);
+
+    const btnNext = document.getElementById('btnNextSong');
+    if (btnNext) btnNext.addEventListener('click', nextSong);
+
+    // Playlist modal open triggers
+    const btnOpenPlaylist = document.getElementById('btnOpenPlaylist');
+    if (btnOpenPlaylist) btnOpenPlaylist.addEventListener('click', openSongModal);
+
+    const btnBarPlaylist = document.getElementById('btnBarOpenPlaylist');
+    if (btnBarPlaylist) btnBarPlaylist.addEventListener('click', openSongModal);
+
+    const musicInfoClickable = document.getElementById('musicInfoClickable');
+    if (musicInfoClickable) musicInfoClickable.addEventListener('click', openSongModal);
+
+    // Modal close triggers
+    const btnCloseModal = document.getElementById('btnCloseSongModal');
+    if (btnCloseModal) btnCloseModal.addEventListener('click', closeSongModal);
+
+    const modalBackdrop = document.getElementById('songModal');
+    if (modalBackdrop) {
+      modalBackdrop.addEventListener('click', (e) => {
+        if (e.target === modalBackdrop) closeSongModal();
+      });
     }
 
+    // Custom song upload handlers (both top-nav and modal footer)
     const fileInput = document.getElementById('customAudioInput');
     const btnUpload = document.getElementById('btnUploadSong');
+    const btnModalUpload = document.getElementById('btnModalUpload');
 
-    if (btnUpload && fileInput) {
-      btnUpload.addEventListener('click', () => fileInput.click());
+    const triggerUpload = () => {
+      if (fileInput) fileInput.click();
+    };
 
+    if (btnUpload) btnUpload.addEventListener('click', triggerUpload);
+    if (btnModalUpload) {
+      btnModalUpload.addEventListener('click', () => {
+        closeSongModal();
+        triggerUpload();
+      });
+    }
+
+    if (fileInput) {
       fileInput.addEventListener('change', (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -681,9 +779,119 @@
 
           const songName = file.name.replace(/\.[^/.]+$/, "");
           const titleEl = document.getElementById('songTitle');
+          const subEl = document.getElementById('songSub');
+          const badgeEl = document.getElementById('songBadge');
           if (titleEl) titleEl.textContent = songName;
+          if (subEl) subEl.textContent = 'Custom Uploaded Song • Click to Change';
+          if (badgeEl) badgeEl.textContent = 'Custom';
+
+          document.querySelectorAll('.song-item').forEach(el => {
+            el.classList.remove('is-selected', 'is-playing');
+          });
         }
       });
+    }
+
+    // Render 6 curated songs and set default song display
+    renderSongList();
+    updateSongDisplay(0, false);
+  }
+
+  function renderSongList() {
+    const container = document.getElementById('songListContainer');
+    if (!container) return;
+
+    container.innerHTML = '';
+    LOVE_PLAYLIST.forEach((song, idx) => {
+      const item = document.createElement('div');
+      item.className = `song-item ${idx === currentSongIndex ? 'is-selected' : ''} ${idx === currentSongIndex && isMusicPlaying ? 'is-playing' : ''}`;
+      item.dataset.index = idx;
+
+      item.innerHTML = `
+        <div class="song-item-idx">${idx + 1}</div>
+        <div class="song-item-info">
+          <div class="song-item-top">
+            <span class="song-item-title">${song.title}</span>
+            <span class="song-item-badge">${song.badge}</span>
+          </div>
+          <div class="song-item-artist">${song.artist} • ${song.subtitle}</div>
+        </div>
+        <div class="song-item-side">
+          <div class="song-playing-anim">
+            <span></span><span></span><span></span>
+          </div>
+          <span class="song-duration-tag">${song.duration}</span>
+        </div>
+      `;
+
+      item.addEventListener('click', () => {
+        selectSong(idx);
+        closeSongModal();
+      });
+
+      container.appendChild(item);
+    });
+  }
+
+  function updateSongDisplay(index, isPlayingNow = isMusicPlaying) {
+    const song = LOVE_PLAYLIST[index];
+    if (!song) return;
+
+    const titleEl = document.getElementById('songTitle');
+    const subEl = document.getElementById('songSub');
+    const badgeEl = document.getElementById('songBadge');
+
+    if (titleEl) titleEl.textContent = song.title;
+    if (subEl) subEl.textContent = `${song.artist} • Click to Change Song ▾`;
+    if (badgeEl) badgeEl.textContent = `Track ${index + 1}/${LOVE_PLAYLIST.length}`;
+
+    // Update active states in modal list
+    const items = document.querySelectorAll('.song-item');
+    items.forEach((item, idx) => {
+      if (idx === index) {
+        item.classList.add('is-selected');
+        if (isPlayingNow) item.classList.add('is-playing');
+        else item.classList.remove('is-playing');
+      } else {
+        item.classList.remove('is-selected', 'is-playing');
+      }
+    });
+  }
+
+  function selectSong(index) {
+    currentSongIndex = index;
+    const song = LOVE_PLAYLIST[currentSongIndex];
+    if (!song || !cardAudio) return;
+
+    cardAudio.src = song.file;
+    updateSongDisplay(currentSongIndex, true);
+    playSong();
+  }
+
+  function nextSong() {
+    const nextIdx = (currentSongIndex + 1) % LOVE_PLAYLIST.length;
+    selectSong(nextIdx);
+  }
+
+  function prevSong() {
+    const prevIdx = (currentSongIndex - 1 + LOVE_PLAYLIST.length) % LOVE_PLAYLIST.length;
+    selectSong(prevIdx);
+  }
+
+  function openSongModal() {
+    const modal = document.getElementById('songModal');
+    if (modal) {
+      modal.classList.add('active');
+      modal.setAttribute('aria-hidden', 'false');
+      updateSongDisplay(currentSongIndex, isMusicPlaying);
+    }
+  }
+
+  function closeSongModal() {
+    const modal = document.getElementById('songModal');
+    if (modal) {
+      modal.classList.remove('active');
+      modal.setAttribute('aria-hidden', 'true');
     }
   }
 
@@ -692,6 +900,7 @@
     cardAudio.play().then(() => {
       isMusicPlaying = true;
       updateMusicUI(true);
+      updateSongDisplay(currentSongIndex, true);
     }).catch(() => {});
   }
 
@@ -700,6 +909,7 @@
     cardAudio.pause();
     isMusicPlaying = false;
     updateMusicUI(false);
+    updateSongDisplay(currentSongIndex, false);
   }
 
   function toggleSong() {
@@ -1100,12 +1310,18 @@
       });
     });
 
-    // 13. Keyboard Shortcuts (L = Lift, O = Open, M = Music, + = Zoom In, - = Zoom Out)
+    // 13. Keyboard Shortcuts (L = Lift, O = Open, M = Music, S = Song Modal, + = Zoom In, - = Zoom Out)
     window.addEventListener('keydown', (e) => {
       const key = e.key.toLowerCase();
       if (key === 'l') toggleLift();
       else if (key === 'o') toggleCard();
       else if (key === 'm') toggleSong();
+      else if (key === 's') {
+        const modal = document.getElementById('songModal');
+        if (modal && modal.classList.contains('active')) closeSongModal();
+        else openSongModal();
+      }
+      else if (e.key === 'Escape') closeSongModal();
       else if (e.key === '+' || e.key === '=') zoomIn();
       else if (e.key === '-' || e.key === '_') zoomOut();
       else if (key === 'r') goToView(isLifted ? 'openedCenter' : 'tableOverview');

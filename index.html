@@ -16,7 +16,7 @@
 
   <!-- Hidden Custom Audio File Input -->
   <input type="file" id="customAudioInput" accept="audio/*" style="display: none;">
-  <audio id="cardAudio" src="romantic_love_song.wav" loop preload="auto"></audio>
+  <audio id="cardAudio" src="audio/perfect_ed_sheeran.mp3" loop preload="metadata"></audio>
 
   <!-- Top Glassmorphism Navigation Bar -->
   <header class="top-nav">
@@ -48,13 +48,19 @@
         <span id="musicText">Play Song</span>
       </button>
 
-      <!-- 4. Upload Any Custom Love Song -->
-      <button class="nav-btn upload-song-btn" id="btnUploadSong" title="Choose ANY Romantic Song / MP3 from your device">
-        <span class="btn-icon">📁</span>
-        <span>Change Song</span>
+      <!-- 4. Select from 6 Romantic Love Songs -->
+      <button class="nav-btn playlist-btn" id="btnOpenPlaylist" title="Choose from 6 Romantic Love Songs with Names (Press S)">
+        <span class="btn-icon">🎶</span>
+        <span id="playlistText">Love Songs (6)</span>
       </button>
 
-      <!-- 5. Reset Camera View -->
+      <!-- 5. Upload Custom Song -->
+      <button class="nav-btn upload-song-btn" id="btnUploadSong" title="Choose ANY Custom Romantic Song / MP3 from your device">
+        <span class="btn-icon">📁</span>
+        <span>Custom Song</span>
+      </button>
+
+      <!-- 6. Reset Camera View -->
       <button class="nav-btn" id="btnResetView" title="Reset Camera to Ideal 3D View">
         <span class="btn-icon">🔄</span>
         <span>Reset View</span>
@@ -131,19 +137,63 @@
 
   <!-- Romantic Song Player Bar (Floating Glassmorphism Card) -->
   <div class="floating-music-bar" id="musicBar">
-    <div class="equalizer" id="equalizer">
+    <div class="equalizer" id="equalizer" title="Equalizer">
       <span class="eq-bar bar-1"></span>
       <span class="eq-bar bar-2"></span>
       <span class="eq-bar bar-3"></span>
       <span class="eq-bar bar-4"></span>
     </div>
-    <div class="music-info">
-      <span class="song-title" id="songTitle">Can't Help Falling in Love (Piano & Strings)</span>
-      <span class="song-sub">Romantic Love Ballad • Click 'Change Song' to play any MP3</span>
-    </div>
-    <div class="music-actions">
-      <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.85" title="Volume" class="volume-slider">
+
+    <!-- Quick Prev / Play / Next Controls -->
+    <div class="music-track-nav">
+      <button class="music-step-btn" id="btnPrevSong" title="Previous Love Song">⏮</button>
       <button class="music-play-btn" id="btnPlayPauseSong" title="Play / Pause Song">▶</button>
+      <button class="music-step-btn" id="btnNextSong" title="Next Love Song">⏭</button>
+    </div>
+
+    <!-- Clickable Song Details (Click to open playlist) -->
+    <div class="music-info clickable" id="musicInfoClickable" title="Click to browse & change love songs">
+      <div class="song-title-row">
+        <span class="song-title" id="songTitle">Perfect</span>
+        <span class="song-badge" id="songBadge">Track 1/6</span>
+      </div>
+      <span class="song-sub" id="songSub">Ed Sheeran • Click to Change Song ▾</span>
+    </div>
+
+    <div class="music-actions">
+      <button class="music-pill-btn" id="btnBarOpenPlaylist" title="Open Love Songs Selection Menu">
+        <span>🎶 Songs</span>
+      </button>
+      <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.85" title="Volume" class="volume-slider">
+    </div>
+  </div>
+
+  <!-- Interactive Romantic Love Songs Modal -->
+  <div class="song-modal-backdrop" id="songModal" aria-hidden="true">
+    <div class="song-modal-card">
+      <div class="song-modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-heart">💖</span>
+          <div>
+            <h2 class="song-modal-title">Choose Romantic Love Song</h2>
+            <p class="song-modal-subtitle">6 Beautiful Love Songs for Siddhi's 20th Birthday</p>
+          </div>
+        </div>
+        <button class="song-modal-close" id="btnCloseSongModal" title="Close (Esc)">✕</button>
+      </div>
+
+      <!-- Scrollable list of 6 curated love songs -->
+      <div class="song-list" id="songListContainer">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+
+      <!-- Modal Footer with upload option -->
+      <div class="song-modal-footer">
+        <div class="custom-song-prompt">
+          <span>Have another song in mind?</span>
+          <button class="custom-upload-trigger" id="btnModalUpload">📁 Upload MP3 from device</button>
+        </div>
+      </div>
     </div>
   </div>
 
