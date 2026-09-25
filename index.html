@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Siddhi's 20th Birthday - Interactive 3D Card Experience</title>
+  
+  <!-- Modern Google Fonts: Caveat & Outfit & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Hidden Custom Audio File Input -->
+  <input type="file" id="customAudioInput" accept="audio/*" style="display: none;">
+  <audio id="cardAudio" src="romantic_love_song.wav" loop preload="auto"></audio>
+
+  <!-- Top Glassmorphism Navigation Bar -->
+  <header class="top-nav">
+    <div class="nav-brand">
+      <span class="heart-pulse">💖</span>
+      <div class="nav-title-group">
+        <h1 class="nav-title">Siddhi's 20th Birthday Card</h1>
+        <p class="nav-subtitle">Interactive 3D Physical Greeting Card Simulator</p>
+      </div>
+    </div>
+
+    <!-- Quick Action Buttons -->
+    <div class="nav-actions">
+      <!-- 1. Lift Card Upright / Lay on Table -->
+      <button class="nav-btn lift-btn" id="btnLiftCard" title="Lift Card Up (Stand Upright in 3D) / Lay Flat on Table (Press L)">
+        <span class="btn-icon" id="liftIcon">🖐️</span>
+        <span id="liftText">Lift Card</span>
+      </button>
+
+      <!-- 2. Physically Open / Close Card -->
+      <button class="nav-btn primary-btn" id="btnToggleOpen" title="Physically Open / Close Card (Press O)">
+        <span class="btn-icon" id="openIcon">📖</span>
+        <span id="openText">Open Card</span>
+      </button>
+
+      <!-- 3. Romantic Love Song Toggle -->
+      <button class="nav-btn music-btn" id="btnToggleMusic" title="Play Romantic Love Song (Press M)">
+        <span class="btn-icon" id="musicIcon">🎵</span>
+        <span id="musicText">Play Song</span>
+      </button>
+
+      <!-- 4. Upload Any Custom Love Song -->
+      <button class="nav-btn upload-song-btn" id="btnUploadSong" title="Choose ANY Romantic Song / MP3 from your device">
+        <span class="btn-icon">📁</span>
+        <span>Change Song</span>
+      </button>
+
+      <!-- 5. Reset Camera View -->
+      <button class="nav-btn" id="btnResetView" title="Reset Camera to Ideal 3D View">
+        <span class="btn-icon">🔄</span>
+        <span>Reset View</span>
+      </button>
+
+      <!-- 6. Print Sheets -->
+      <a href="print-template.html" target="_blank" class="nav-btn print-btn" title="Open 1:1 Printable A4 Photo Sheet">
+        <span class="btn-icon">🖨️</span>
+        <span>Print Sheets</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Fullscreen WebGL 3D Canvas Stage -->
+  <main class="webgl-stage" id="webgl-container"></main>
+
+  <!-- Floating On-Screen Zoom & Focus Controls (Right Side) -->
+  <aside class="floating-zoom-panel" aria-label="Zoom and View Controls">
+    <button class="zoom-btn" id="btnZoomIn" title="Zoom In Super Close (+)">
+      <span>➕</span>
+      <span class="zoom-label">Zoom In</span>
+    </button>
+    <button class="zoom-btn" id="btnZoomOut" title="Zoom Out (-)">
+      <span>➖</span>
+      <span class="zoom-label">Zoom Out</span>
+    </button>
+    <div class="zoom-divider"></div>
+    <button class="zoom-btn focus-btn" id="btnFocusLeft" title="Zoom Close to Left Flap Note & Photos">
+      <span>📜</span>
+      <span class="zoom-label">Left Note</span>
+    </button>
+    <button class="zoom-btn focus-btn" id="btnFocusHeart" title="Zoom Close to Center Pixel Heart Photos">
+      <span>💖</span>
+      <span class="zoom-label">Pixel Heart</span>
+    </button>
+    <button class="zoom-btn focus-btn" id="btnFocusRight" title="Zoom Close to Right Flap Note & Photos">
+      <span>💌</span>
+      <span class="zoom-label">Right Note</span>
+    </button>
+  </aside>
+
+  <!-- Floating 3D Posture & Sliders Panel (Left Side) -->
+  <aside class="floating-tilt-panel" id="tiltPanel">
+    <div class="panel-header">
+      <span class="panel-title">📐 3D Card Posture</span>
+      <button class="panel-toggle-btn" id="btnToggleTiltPanel" title="Minimize / Expand">▾</button>
+    </div>
+    <div class="panel-content" id="tiltPanelContent">
+      <div class="slider-row">
+        <label for="tiltSlider">
+          <span>Card Tilt / Lift</span>
+          <span class="slider-val" id="tiltVal">Standing 3D</span>
+        </label>
+        <div class="slider-track-wrap">
+          <span class="slider-tag">🛏️ Flat</span>
+          <input type="range" id="tiltSlider" min="0" max="90" value="82" step="1">
+          <span class="slider-tag">🧍 Upright</span>
+        </div>
+      </div>
+
+      <div class="slider-row">
+        <label for="foldSlider">
+          <span>Flap Fold Angle</span>
+          <span class="slider-val" id="foldVal">152° (3D Wings)</span>
+        </label>
+        <div class="slider-track-wrap">
+          <span class="slider-tag">90° Box</span>
+          <input type="range" id="foldSlider" min="90" max="180" value="152" step="1">
+          <span class="slider-tag">180° Flat</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Romantic Song Player Bar (Floating Glassmorphism Card) -->
+  <div class="floating-music-bar" id="musicBar">
+    <div class="equalizer" id="equalizer">
+      <span class="eq-bar bar-1"></span>
+      <span class="eq-bar bar-2"></span>
+      <span class="eq-bar bar-3"></span>
+      <span class="eq-bar bar-4"></span>
+    </div>
+    <div class="music-info">
+      <span class="song-title" id="songTitle">Can't Help Falling in Love (Piano & Strings)</span>
+      <span class="song-sub">Romantic Love Ballad • Click 'Change Song' to play any MP3</span>
+    </div>
+    <div class="music-actions">
+      <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.85" title="Volume" class="volume-slider">
+      <button class="music-play-btn" id="btnPlayPauseSong" title="Play / Pause Song">▶</button>
+    </div>
+  </div>
+
+  <!-- Minimal Floating Bottom Control Bar: Camera Presets & Interaction Hints -->
+  <div class="bottom-overlay">
+    <div class="interaction-hint" id="interactionHint">
+      <span class="sparkle-icon">✨</span> Click <strong>"Lift Card"</strong> to stand in 3D • Tap card to unfold • Drag in any direction to orbit 360° • Click any note/photo to zoom in close
+    </div>
+
+    <div class="preset-pill-group">
+      <button class="preset-btn active" data-view="uprightPerspective">🌸 3D Standing View</button>
+      <button class="preset-btn" data-view="closedFront">🔍 Front Cover</button>
+      <button class="preset-btn" data-view="openedCenter">💖 Full Inside Spread</button>
+      <button class="preset-btn" data-view="openedHeart">🔍 Pixel Heart Close-Up</button>
+      <button class="preset-btn" data-view="openedLeft">📜 Left Flap Note</button>
+      <button class="preset-btn" data-view="openedRight">💌 Right Flap Note</button>
+      <button class="preset-btn" data-view="tableOverview">🛏️ Flat on Table</button>
+    </div>
+  </div>
+
+  <!-- 3D Engine Scripts -->
+  <script src="libs/three.min.js"></script>
+  <script src="libs/OrbitControls.js"></script>
+  <script src="libs/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  
+  <!-- Card Application Engine -->
+  <script src="app.js"></script>
+</body>
+</html>

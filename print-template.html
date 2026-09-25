@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A3 Birthday Card - Master Printable Template</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Dancing+Script:wght@600;700&family=Inter:wght@400;500;600;700&family=Outfit:wght@600;800;900&family=Sacramento&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --font-ui: 'Inter', sans-serif;
+      --font-hand: 'Caveat', cursive;
+      --font-call: 'Dancing Script', cursive;
+      --font-bold: 'Outfit', sans-serif;
+      --pink: #ff4d8d;
+      --pink-soft: #ffa8cb;
+      --pink-pale: #ffd6e7;
+      --card-black: #0b0a0e;
+      --gel-pen: #ffffff;
+      --dashed-border: rgba(255, 255, 255, 0.9);
+      --torn-pink: #f8c9d8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #110e14;
+      color: #fff;
+      font-family: var(--font-ui);
+      padding: 16px 20px 60px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Top Sticky Action Bar */
+    .top-toolbar {
+      width: 100%;
+      max-width: 1220px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(22, 16, 26, 0.9);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 101, 155, 0.35);
+      padding: 12px 24px;
+      border-radius: 18px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+      position: sticky;
+      top: 15px;
+      z-index: 100;
+    }
+
+    .toolbar-left h1 {
+      font-size: 18px;
+      font-family: var(--font-bold);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .toolbar-left p {
+      font-size: 11.5px;
+      color: var(--pink-soft);
+      margin-top: 1px;
+    }
+
+    .toolbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .tool-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .tool-btn:hover {
+      background: rgba(255, 255, 255, 0.18);
+      border-color: var(--pink);
+      transform: translateY(-1px);
+    }
+
+    .print-main-btn {
+      background: linear-gradient(135deg, #ff4d8d, #e02466);
+      border: none;
+      box-shadow: 0 4px 18px rgba(255, 77, 141, 0.45);
+    }
+
+    .print-main-btn:hover {
+      background: linear-gradient(135deg, #ff659b, #ff1a68);
+      box-shadow: 0 6px 24px rgba(255, 77, 141, 0.65);
+    }
+
+    /* View Switcher Tabs */
+    .view-tabs {
+      display: flex;
+      gap: 8px;
+      max-width: 1220px;
+      width: 100%;
+      margin-bottom: 18px;
+    }
+
+    .tab-btn {
+      padding: 8px 18px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #ccc;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--pink);
+      color: #fff;
+      border-color: var(--pink);
+      box-shadow: 0 0 16px rgba(255, 101, 155, 0.4);
+    }
+
+    /* ==========================================================================
+       A3 MASTER SHEET (420mm × 297mm Landscape @ 1.414 ratio)
+       Screen Representation: 1200px × 848px
+       ========================================================================== */
+    .sheet-wrapper {
+      width: 1200px;
+      height: 848px;
+      background-color: var(--card-black);
+      background-image: 
+        radial-gradient(circle at 50% 30%, #17141f 0%, var(--card-black) 85%),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.012), rgba(255,255,255,0.012) 1px, transparent 1px, transparent 2px);
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.85), 0 0 0 2px rgba(255, 101, 155, 0.25);
+      border-radius: 4px;
+      position: relative;
+      display: flex;
+      overflow: hidden;
+      margin-bottom: 40px;
+    }
+
+    /* Score Guidelines for Folding at 105mm and 315mm */
+    .score-guideline {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 0;
+      border-left: 2px dashed rgba(255, 101, 155, 0.65);
+      z-index: 80;
+      pointer-events: none;
+    }
+
+    .score-guideline.left-score {
+      left: 25%; /* 105 mm */
+    }
+
+    .score-guideline.right-score {
+      left: 75%; /* 315 mm */
+    }
+
+    .score-tag {
+      position: absolute;
+      top: 6px;
+      transform: translateX(-50%);
+      background: rgba(255, 77, 141, 0.95);
+      color: #fff;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+      white-space: nowrap;
+    }
+
+    /* Three Panels */
+    .a3-panel {
+      height: 100%;
+      position: relative;
+      padding: 34px 18px 20px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .panel-left {
+      width: 25%; /* 105 mm */
+      border-right: 1px dashed rgba(255, 255, 255, 0.08);
+    }
+
+    .panel-center {
+      width: 50%; /* 210 mm */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px 14px 24px;
+    }
+
+    .panel-right {
+      width: 25%; /* 105 mm */
+      border-left: 1px dashed rgba(255, 255, 255, 0.08);
+    }
+
+    /* ==========================================================================
+       POLAROID PHOTO FRAMES
+       ========================================================================== */
+    .polaroid-frame {
+      position: relative;
+      background: #ffffff;
+      border-radius: 2px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.7);
+      padding: 3.5px 3.5px 7px 3.5px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.2s ease;
+    }
+
+    .polaroid-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 1px;
+      display: block;
+    }
+
+    .dashed-border {
+      position: absolute;
+      top: 1.5px;
+      left: 1.5px;
+      right: 1.5px;
+      bottom: 1.5px;
+      border: 1.5px dashed var(--dashed-border);
+      pointer-events: none;
+      border-radius: 1px;
+    }
+
+    /* Side Flap Photo Pairs (Clean 2-Photo Rows) */
+    .side-photo-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin: 4px 0;
+    }
+
+    .side-photo-row .polaroid-frame {
+      width: 82px;
+      height: 84px;
+    }
+
+    /* Playful tilt on polaroids */
+    .tilt-left { transform: rotate(-3deg); }
+    .tilt-right { transform: rotate(3deg); }
+    .tilt-slight { transform: rotate(1.5deg); }
+
+    /* ==========================================================================
+       CENTER PANEL: THE PERFECT HEART COLLAGE
+       ========================================================================== */
+    .center-top-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0 10px;
+    }
+
+    .top-side-quote {
+      font-family: var(--font-hand);
+      font-size: 18px;
+      color: #fff;
+      opacity: 0.9;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .i-heart-u-calligraphy {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .calligraphy-letter {
+      font-family: var(--font-call);
+      font-size: 52px;
+      font-weight: 700;
+      color: #ffffff;
+      text-shadow: 0 0 12px rgba(255, 255, 255, 0.8), 0 0 25px var(--pink);
+      line-height: 1;
+    }
+
+    .calligraphy-heart {
+      font-size: 28px;
+      color: var(--pink-soft);
+      animation: pulseBeat 1.8s infinite ease-in-out;
+    }
+
+    @keyframes pulseBeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.22); }
+    }
+
+    /* ----------------------------------------------------
+       THE USER-APPROVED PIXEL HEART FORMATION (8 PHOTOS)
+       ---------------------------------------------------- */
+    .heart-stage-container {
+      position: relative;
+      width: 352px;
+      height: 536px;
+      margin: 6px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pixel-heart-grid {
+      position: relative;
+      width: 352px;
+      height: 536px;
+    }
+
+    .pixel-card {
+      position: absolute;
+      width: 112px;
+      height: 128px;
+      background: #ffffff;
+      padding: 4px 4px 6px 4px;
+      border-radius: 3px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.7);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .pixel-card:hover {
+      transform: scale(1.08) !important;
+      z-index: 50;
+      box-shadow: 0 8px 24px rgba(255, 77, 141, 0.6);
+    }
+
+    .pixel-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 1px;
+      display: block;
+    }
+
+    /* Stepped Pixel Heart Coordinates */
+    .px-card-1 { left: 60px;  top: 0px; }
+    .px-card-2 { left: 180px; top: 0px; }
+    .px-card-3 { left: 0px;   top: 136px; }
+    .px-card-4 { left: 120px; top: 136px; z-index: 5; }
+    .px-card-5 { left: 240px; top: 136px; }
+    .px-card-6 { left: 60px;  top: 272px; }
+    .px-card-7 { left: 180px; top: 272px; }
+    .px-card-8 { left: 120px; top: 408px; z-index: 5; }
+
+    /* Floating Handwritten Annotations Flanking Heart */
+    .heart-float-left {
+      position: absolute;
+      left: -110px;
+      top: 46%;
+      transform: translateY(-50%) rotate(-6deg);
+      font-family: var(--font-hand);
+      font-size: 20px;
+      color: #fff;
+      line-height: 1.25;
+      text-align: right;
+      text-shadow: 0 0 4px rgba(255,255,255,0.7);
+    }
+
+    .heart-float-right {
+      position: absolute;
+      right: -110px;
+      top: 46%;
+      transform: translateY(-50%) rotate(6deg);
+      font-family: var(--font-hand);
+      font-size: 20px;
+      color: #fff;
+      line-height: 1.25;
+      text-align: left;
+      text-shadow: 0 0 4px rgba(255,255,255,0.7);
+    }
+
+    /* Center Bottom Section */
+    .center-bottom-box {
+      text-align: center;
+      width: 100%;
+      margin-bottom: 4px;
+    }
+
+    .center-memories-title {
+      font-family: var(--font-hand);
+      font-size: 22px;
+      color: #fff;
+      letter-spacing: 0.5px;
+    }
+
+    .ribbon-bow-doodle {
+      width: 44px;
+      height: 26px;
+      margin: 3px auto;
+    }
+
+    .center-forever-sub {
+      font-family: var(--font-hand);
+      font-size: 18px;
+      color: var(--pink-soft);
+    }
+
+    /* ==========================================================================
+       SIDE PANELS: TYPOGRAPHY, STICKERS & TORN NOTES
+       ========================================================================== */
+    .panel-hand-quote {
+      font-family: var(--font-hand);
+      font-size: 18px;
+      line-height: 1.25;
+      color: #ffffff;
+      text-shadow: 0 0 2px rgba(255,255,255,0.7);
+    }
+
+    .letter-with-sticker-box {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin: 6px 0;
+    }
+
+    .panel-hand-letter {
+      font-family: var(--font-hand);
+      font-size: 16px;
+      line-height: 1.32;
+      color: rgba(255, 255, 255, 0.95);
+      white-space: pre-line;
+    }
+
+    /* Torn-Edge Pink Kraft Paper Notes */
+    .torn-paper-note {
+      position: relative;
+      background-color: var(--torn-pink);
+      color: #332028;
+      padding: 9px 12px;
+      border-radius: 3px;
+      box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.5);
+      clip-path: polygon(
+        0% 4%, 4% 0%, 12% 3%, 22% 1%, 34% 4%, 46% 0%, 58% 3%, 70% 1%, 82% 4%, 94% 0%, 100% 3%,
+        98% 30%, 100% 60%, 97% 95%,
+        92% 100%, 80% 97%, 68% 100%, 55% 96%, 42% 100%, 30% 97%, 18% 100%, 6% 96%, 0% 98%,
+        2% 70%, 0% 35%
+      );
+    }
+
+    .torn-paper-note.note-1 { width: 90px; transform: rotate(-3deg); }
+    .torn-paper-note.note-2 { width: 84px; transform: rotate(3deg); margin-left: auto; }
+    .torn-paper-note.note-3 { width: 92px; transform: rotate(2deg); }
+
+    .torn-inner {
+      font-family: var(--font-hand);
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.22;
+      text-align: center;
+    }
+
+    .sticker-art {
+      width: 54px;
+      height: 50px;
+      filter: drop-shadow(1px 3px 6px rgba(0,0,0,0.5));
+    }
+
+    .sticker-art.hugging {
+      width: 66px;
+      height: 54px;
+    }
+
+    .flower-art {
+      width: 30px;
+      height: 44px;
+    }
+
+    .bow-art {
+      width: 38px;
+      height: 26px;
+    }
+
+    .flex-row-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 4px 0;
+    }
+
+    /* ==========================================================================
+       FRONT COVER FLAPS SHEET (Happy Birthday Siddhi when closed)
+       ========================================================================== */
+    .front-cover-sheet {
+      width: 600px; /* Represents closed A4 size: 210mm x 297mm */
+      height: 848px;
+      background: var(--card-black);
+      background-image: radial-gradient(circle at 50% 35%, #181420 0%, var(--card-black) 90%);
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.85), 0 0 0 2px rgba(255, 101, 155, 0.25);
+      border-radius: 4px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 36px 28px;
+      margin-bottom: 40px;
+    }
+
+    .front-seam-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      border-left: 2px dashed rgba(255, 255, 255, 0.15);
+      z-index: 2;
+    }
+
+    .front-foil-header {
+      width: 92%;
+      height: 110px;
+      filter: drop-shadow(0 6px 16px rgba(0,0,0,0.6));
+      z-index: 10;
+    }
+
+    .front-name-calligraphy {
+      font-family: var(--font-call);
+      font-size: 58px;
+      color: #ffffff;
+      text-shadow: 0 0 14px rgba(255, 255, 255, 0.8), 0 0 25px var(--pink);
+      letter-spacing: 2px;
+      margin-top: -10px;
+      z-index: 10;
+    }
+
+    .front-big-numbers {
+      font-family: var(--font-bold);
+      font-weight: 900;
+      font-size: 180px;
+      line-height: 1;
+      color: var(--pink-soft);
+      background: linear-gradient(135deg, #ffffff 0%, #ffa8cb 30%, #ff4d8d 70%, #d81b60 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 8px 20px rgba(255, 77, 141, 0.65)) drop-shadow(0 2px 4px #fff);
+      z-index: 10;
+    }
+
+    .front-subtitle-text {
+      font-family: var(--font-hand);
+      font-size: 24px;
+      color: #fff;
+      opacity: 0.95;
+      text-align: center;
+      letter-spacing: 0.5px;
+      z-index: 10;
+    }
+
+    @page {
+      size: A3 landscape;
+      margin: 0;
+    }
+
+    @media print {
+      body {
+        background: #0b0a0e !important;
+        color: #fff !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      .top-toolbar, .view-tabs {
+        display: none !important;
+      }
+      .score-tag {
+        display: none !important;
+      }
+      .score-guideline {
+        border-left: 1px dashed rgba(255, 255, 255, 0.2) !important;
+      }
+      .sheet-wrapper {
+        display: flex !important;
+        width: 420mm !important;
+        height: 297mm !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        page-break-after: always !important;
+        break-after: page !important;
+      }
+      .front-cover-sheet {
+        display: flex !important;
+        width: 420mm !important;
+        height: 297mm !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        page-break-after: always !important;
+        break-after: page !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Action Toolbar -->
+  <header class="top-toolbar">
+    <div class="toolbar-left">
+      <h1>🎀 A3 Birthday Card Master Printable Template</h1>
+      <p>Clean black cardstock, cropped photos & the perfect heart layout</p>
+    </div>
+
+    <div class="toolbar-actions">
+      <a href="A3_Birthday_Card_Master.pdf" download="A3_Birthday_Card_Master.pdf" class="tool-btn" style="background: rgba(255, 77, 141, 0.25); border-color: var(--pink);">
+        <span>📥 Download Ready PDF</span>
+      </a>
+      <button class="tool-btn print-main-btn" onclick="window.print()">
+        <span>🖨️ Print / Save A3 PDF</span>
+      </button>
+      <a href="index.html" class="tool-btn">
+        <span>🔄 3D View</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- View Switcher Tabs -->
+  <div class="view-tabs">
+    <button class="tab-btn active" id="tabInside" onclick="switchView('inside')">
+      🌸 1. Full Unfolded Inside Card (A3: 420mm × 297mm)
+    </button>
+    <button class="tab-btn" id="tabFront" onclick="switchView('front')">
+      🎁 2. Front Cover Flaps (Happy Birthday Siddhi)
+    </button>
+  </div>
+
+  <!-- ========================================================================== -->
+  <!-- 1. FULL UNFOLDED A3 INSIDE CARD (420mm x 297mm Landscape)                  -->
+  <!-- ========================================================================== -->
+  <div class="sheet-wrapper" id="viewInsideCard">
+    
+    <!-- Score Guidelines for Gatefold Folding at 105mm and 315mm -->
+    <div class="score-guideline left-score">
+      <div class="score-tag">Score & Fold 1 (105 mm)</div>
+    </div>
+    <div class="score-guideline right-score">
+      <div class="score-tag">Score & Fold 2 (315 mm)</div>
+    </div>
+
+    <!-- ---------------------------------------------------- -->
+    <!-- LEFT FLAP (105mm wide)                               -->
+    <!-- ---------------------------------------------------- -->
+    <div class="a3-panel panel-left">
+      <!-- 1. Top Quote -->
+      <div class="panel-hand-quote">
+        You make my days so much happier ♡ 🎀
+      </div>
+
+      <!-- 2. Top Pair of Polaroid Photos (Cropped & Upright) -->
+      <div class="side-photo-row">
+        <div class="polaroid-frame tilt-left">
+          <img src="photos_cropped/crop_11.jpg" alt="Memory 11">
+          <div class="dashed-border"></div>
+        </div>
+        <div class="polaroid-frame tilt-right">
+          <img src="photos_cropped/crop_12.jpg" alt="Memory 12">
+          <div class="dashed-border"></div>
+        </div>
+      </div>
+
+      <!-- 3. Bear Sticker & Love Letter Row -->
+      <div class="letter-with-sticker-box">
+        <div class="sticker-art" id="boxBearLeft"></div>
+        <div class="panel-hand-letter">
+          You're kind, funny, caring, talented, beautiful and so, so special. 🌸
+          <br><br>
+          Every moment with you feels magical. I'm really lucky to have you in my life ♡ 💖
+        </div>
+      </div>
+
+      <!-- 4. Torn Paper Scrap 1 & Bow Doodle -->
+      <div class="flex-row-box">
+        <div class="torn-paper-note note-1">
+          <div class="torn-inner">good<br>things<br>take<br>time<br>♡ ✨</div>
+        </div>
+        <div class="bow-art" id="boxBowLeft"></div>
+        <div style="font-family: var(--font-hand); font-size: 15px; color: #fff; opacity: 0.9;">
+          you make everyday feel a little more special ✦
+        </div>
+      </div>
+
+      <!-- 5. Torn Paper Scrap 2 -->
+      <div class="torn-paper-note note-2">
+        <div class="torn-inner">you<br>are<br>enough<br>♡ 🌷</div>
+      </div>
+
+      <!-- 6. Bottom Pair of Polaroid Photos -->
+      <div class="side-photo-row">
+        <div class="polaroid-frame tilt-left">
+          <img src="photos_cropped/crop_13.jpg" alt="Memory 13">
+          <div class="dashed-border"></div>
+        </div>
+        <div class="polaroid-frame tilt-right">
+          <img src="photos_cropped/crop_14.jpg" alt="Memory 14">
+          <div class="dashed-border"></div>
+        </div>
+      </div>
+
+      <!-- 7. Bottom Farewell with Hugging Bears Sticker -->
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <div class="sticker-art hugging" id="boxBearsHugging"></div>
+        <div class="flower-art" id="boxFlowerLeft"></div>
+        <div class="panel-hand-quote" style="font-size: 16px;">
+          thank you for always being you ♡ 🧸
+        </div>
+      </div>
+    </div>
+
+    <!-- ---------------------------------------------------- -->
+    <!-- CENTER PANEL (210mm wide) - THE PERFECT HEART COLLAGE -->
+    <!-- ---------------------------------------------------- -->
+    <div class="a3-panel panel-center">
+      
+      <!-- Top Row: "I [❤️] U" Cursive Calligraphy Header -->
+      <div class="center-top-header">
+        <span class="top-side-quote">you're one of one 🎀</span>
+        
+        <div class="i-heart-u-calligraphy">
+          <span class="calligraphy-letter">I</span>
+          <span class="calligraphy-heart">💖</span>
+          <span class="calligraphy-letter">U</span>
+        </div>
+
+        <span class="top-side-quote">my favourite person 💖</span>
+      </div>
+
+      <!-- THE USER-APPROVED PIXEL HEART COLLAGE STAGE -->
+      <div class="heart-stage-container">
+        
+        <!-- Floating Left & Right Handwritten Annotations -->
+        <div class="heart-float-left">
+          so glad<br>you exist<br>🥺💕
+        </div>
+        <div class="heart-float-right">
+          you make<br>everything<br>brighter<br>🌸✨
+        </div>
+
+        <!-- 8 High-Res Photos in Stepped Pixel Heart Formation -->
+        <div class="pixel-heart-grid">
+          
+          <!-- Row 1: Left Lobe (Photo 16) & Right Lobe (Photo 07) -->
+          <div class="pixel-card px-card-1">
+            <img src="heart_cards/card_1.jpg" alt="Memory 1">
+          </div>
+          <div class="pixel-card px-card-2">
+            <img src="heart_cards/card_2.jpg" alt="Memory 2">
+          </div>
+
+          <!-- Row 2: Cheek L (Photo 15), Center (Photo 08), Cheek R (Photo 14) -->
+          <div class="pixel-card px-card-3">
+            <img src="heart_cards/card_3.jpg" alt="Memory 3">
+          </div>
+          <div class="pixel-card px-card-4">
+            <img src="heart_cards/card_4.jpg" alt="Memory 4">
+          </div>
+          <div class="pixel-card px-card-5">
+            <img src="heart_cards/card_5.jpg" alt="Memory 5">
+          </div>
+
+          <!-- Row 3: Taper L (Photo 10) & Taper R (Photo 09) -->
+          <div class="pixel-card px-card-6">
+            <img src="heart_cards/card_6.jpg" alt="Memory 6">
+          </div>
+          <div class="pixel-card px-card-7">
+            <img src="heart_cards/card_7.jpg" alt="Memory 7">
+          </div>
+
+          <!-- Row 4: Pointed Bottom Tip (Photo 05) -->
+          <div class="pixel-card px-card-8">
+            <img src="heart_cards/card_8.jpg" alt="Memory 8">
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Center Bottom Footer -->
+      <div class="center-bottom-box">
+        <div class="center-memories-title">
+          here's to a lifetime of memories together 💌
+        </div>
+        <div class="ribbon-bow-doodle" id="boxBowCenter"></div>
+        <div class="center-forever-sub">
+          same girl ... forever & always ♡ 🎀
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ---------------------------------------------------- -->
+    <!-- RIGHT FLAP (105mm wide)                              -->
+    <!-- ---------------------------------------------------- -->
+    <div class="a3-panel panel-right">
+      <!-- 1. Top Quote -->
+      <div class="panel-hand-quote">
+        same girl...<br>different day...<br>still amazing ♡ ✨
+      </div>
+
+      <!-- 2. Top Pair of Polaroid Photos -->
+      <div class="side-photo-row">
+        <div class="polaroid-frame tilt-left">
+          <img src="photos_cropped/crop_15.jpg" alt="Memory 15">
+          <div class="dashed-border"></div>
+        </div>
+        <div class="polaroid-frame tilt-right">
+          <img src="photos_cropped/crop_16.jpg" alt="Memory 16">
+          <div class="dashed-border"></div>
+        </div>
+      </div>
+
+      <!-- 3. Torn Paper Scrap 3 with Flower & Bear -->
+      <div class="flex-row-box">
+        <div class="flower-art" id="boxFlowerRight"></div>
+        <div class="torn-paper-note note-3">
+          <div class="torn-inner">you<br>make<br>life feel<br>so easy<br>♡ 🍓</div>
+        </div>
+        <div class="sticker-art" id="boxBearRight"></div>
+      </div>
+
+      <!-- 4. Sweet Love Letter -->
+      <div class="panel-hand-letter">
+        I hope you always know how deeply loved, appreciated and cherished you are. 💖
+        <br><br>
+        You make the world a softer, kinder and brighter place just by being you ♡ 🌷
+      </div>
+
+      <!-- 5. Bottom Pair of Polaroid Photos -->
+      <div class="side-photo-row">
+        <div class="polaroid-frame tilt-left">
+          <img src="photos_cropped/crop_17.jpg" alt="Memory 17">
+          <div class="dashed-border"></div>
+        </div>
+        <div class="polaroid-frame tilt-right">
+          <img src="photos_cropped/crop_08.jpg" alt="Memory 8">
+          <div class="dashed-border"></div>
+        </div>
+      </div>
+
+      <!-- 6. Bottom Lifetime Quote with Bow Doodle -->
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <div class="bow-art" id="boxBowRight"></div>
+        <div class="panel-hand-quote" style="font-size: 15px;">
+          here's to a lifetime of laughter, love and beautiful days with you ♡ 🌸
+        </div>
+      </div>
+    </div>
+
+  </div> <!-- /sheet-wrapper -->
+
+
+  <!-- ========================================================================== -->
+  <!-- 2. FRONT COVER FLAPS SHEET (Happy Birthday Siddhi + Giant Foil Numbers)     -->
+  <!-- ========================================================================== -->
+  <div class="front-cover-sheet" id="viewFrontCover" style="display: none;">
+    <div class="front-seam-line"></div>
+
+    <!-- 3D Foil HAPPY BIRTHDAY Balloon Header -->
+    <div class="front-foil-header" id="frontFoilHbdBox"></div>
+
+    <!-- Big Cursive Calligraphy: Siddhi -->
+    <div class="front-name-calligraphy">
+      Siddhi ♡
+    </div>
+
+    <!-- Big 3D Foil Balloon Numbers ("18") -->
+    <div class="front-big-numbers">
+      18
+    </div>
+
+    <!-- Yarn Bows & Glossy Hearts Row -->
+    <div style="display: flex; gap: 24px; align-items: center; z-index: 10;">
+      <div class="bow-art" id="frontBow1" style="width: 48px; height: 38px;"></div>
+      <div class="sticker-art" id="frontHeart1" style="width: 36px; height: 36px;"></div>
+      <div class="bow-art" id="frontBow2" style="width: 48px; height: 38px;"></div>
+      <div class="sticker-art" id="frontHeart2" style="width: 36px; height: 36px;"></div>
+      <div class="bow-art" id="frontBow3" style="width: 48px; height: 38px;"></div>
+    </div>
+
+    <!-- Romantic Subtitle on Front -->
+    <div class="front-subtitle-text">
+      To the girl who has my whole heart ♡ 🎀
+    </div>
+  </div>
+
+
+  <!-- Vector Assets & Scripts -->
+  <script src="assets.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Inject Milk & Mocha Bear Stickers
+      const bearLeft = document.getElementById("boxBearLeft");
+      if (bearLeft) bearLeft.innerHTML = ASSETS.bearHeartSvg;
+
+      const bearsHugging = document.getElementById("boxBearsHugging");
+      if (bearsHugging) bearsHugging.innerHTML = ASSETS.bearsHuggingSvg;
+
+      const bearRight = document.getElementById("boxBearRight");
+      if (bearRight) bearRight.innerHTML = ASSETS.bearHeartSvg;
+
+      // Inject Bow Doodles
+      const bowLeft = document.getElementById("boxBowLeft");
+      if (bowLeft) bowLeft.innerHTML = ASSETS.drawnBowSvg;
+
+      const bowCenter = document.getElementById("boxBowCenter");
+      if (bowCenter) bowCenter.innerHTML = ASSETS.drawnBowSvg;
+
+      const bowRight = document.getElementById("boxBowRight");
+      if (bowRight) bowRight.innerHTML = ASSETS.drawnBowSvg;
+
+      // Inject Flower Doodles
+      const flowerLeft = document.getElementById("boxFlowerLeft");
+      if (flowerLeft) flowerLeft.innerHTML = ASSETS.botanicalStemSvg;
+
+      const flowerRight = document.getElementById("boxFlowerRight");
+      if (flowerRight) flowerRight.innerHTML = ASSETS.botanicalStemSvg;
+
+      // Front Cover Assets
+      const frontHbd = document.getElementById("frontFoilHbdBox");
+      if (frontHbd) frontHbd.innerHTML = ASSETS.happyBirthdayBalloonSvg;
+
+      const fb1 = document.getElementById("frontBow1");
+      const fb2 = document.getElementById("frontBow2");
+      const fb3 = document.getElementById("frontBow3");
+      if (fb1) fb1.innerHTML = ASSETS.yarnBowSvg;
+      if (fb2) fb2.innerHTML = ASSETS.yarnBowSvg;
+      if (fb3) fb3.innerHTML = ASSETS.yarnBowSvg;
+
+      const fh1 = document.getElementById("frontHeart1");
+      const fh2 = document.getElementById("frontHeart2");
+      if (fh1) fh1.innerHTML = ASSETS.glossyHeartSvg;
+      if (fh2) fh2.innerHTML = ASSETS.glossyHeartSvg;
+    });
+
+    // View Switcher between Inside Card & Front Cover
+    function switchView(view) {
+      const inside = document.getElementById("viewInsideCard");
+      const front = document.getElementById("viewFrontCover");
+      const tabInside = document.getElementById("tabInside");
+      const tabFront = document.getElementById("tabFront");
+
+      if (view === "inside") {
+        inside.style.display = "flex";
+        front.style.display = "none";
+        tabInside.classList.add("active");
+        tabFront.classList.remove("active");
+      } else {
+        inside.style.display = "none";
+        front.style.display = "flex";
+        tabInside.classList.remove("active");
+        tabFront.classList.add("active");
+      }
+    }
+  </script>
+</body>
+</html>
