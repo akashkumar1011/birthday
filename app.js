@@ -34,7 +34,7 @@
   let candleLight, sparkleParticles;
   let shadowMesh;
 
-  let isOpen = true;            // Default: OPENED so Siddhi and Akash immediately see all photos, pixel heart, and romantic letters!
+  let isOpen = false;           // Initially CLOSED as requested by user!
   let isLifted = true;          // Default: Standing Upright in real 3D!
   let isAnimating = false;
   let isMusicPlaying = false;
@@ -88,9 +88,9 @@
     scene.background = new THREE.Color(0x070609);
     scene.fog = new THREE.FogExp2(0x070609, 0.02);
 
-    // 2. Camera looking naturally at the upright standing 3D card
+    // 2. Camera looking naturally at the upright standing 3D card (closed front view)
     camera = new THREE.PerspectiveCamera(40, width / height, 0.05, 100);
-    camera.position.set(VIEWS.openedCenter.pos.x, VIEWS.openedCenter.pos.y, VIEWS.openedCenter.pos.z);
+    camera.position.set(VIEWS.uprightPerspective.pos.x, VIEWS.uprightPerspective.pos.y, VIEWS.uprightPerspective.pos.z);
 
     // 3. Renderer with Linear Tone Mapping for 100% True-Color Reproduction
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance' });
@@ -377,10 +377,9 @@
     rightHinge.add(rightFlapGroup);
     cardGroup.add(rightHinge);
 
-    // Initial open state so photos, letters, and banners are immediately visible!
-    const initialOpenRad = (currentFoldDeg * Math.PI) / 180;
-    leftHinge.rotation.y = -initialOpenRad;
-    rightHinge.rotation.y = initialOpenRad;
+    // Initial closed state as requested by user
+    leftHinge.rotation.y = 0;
+    rightHinge.rotation.y = 0;
   }
 
   // =========================================================================
@@ -1207,15 +1206,18 @@
     const btn = document.getElementById('btnToggleOpen');
     const txt = document.getElementById('openText');
     const ico = document.getElementById('openIcon');
+    const hint = document.getElementById('interactionHint');
 
     if (isOpen) {
       if (btn) btn.classList.add('is-open');
       if (txt) txt.textContent = 'Close Card';
       if (ico) ico.textContent = '📕';
+      if (hint) hint.innerHTML = '<span class="sparkle-icon">✨</span> Drag to orbit 360° • Click any note/photo to zoom close • Click "Close Card" to fold';
     } else {
       if (btn) btn.classList.remove('is-open');
       if (txt) txt.textContent = 'Open Card';
       if (ico) ico.textContent = '📖';
+      if (hint) hint.innerHTML = '<span class="sparkle-icon">💖</span> Tap the card or click <strong>"Open Card"</strong> to unfold & reveal Siddhi\'s photos!';
     }
   }
 
