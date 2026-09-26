@@ -34,7 +34,7 @@
   let candleLight, sparkleParticles;
   let shadowMesh;
 
-  let isOpen = false;
+  let isOpen = true;            // Default: OPENED so Siddhi and Akash immediately see all photos, pixel heart, and romantic letters!
   let isLifted = true;          // Default: Standing Upright in real 3D!
   let isAnimating = false;
   let isMusicPlaying = false;
@@ -42,7 +42,34 @@
   let currentTiltDeg = 82;      // 82° upright tilt (tilted back 8° like a real standing card)
   let currentFoldDeg = 152;     // 152° open angle (subtle forward 3D wing curve, not dead flat)
 
-  const textureLoader = new THREE.TextureLoader();
+  // Luxury Asset Loading Manager
+  const loadingManager = new THREE.LoadingManager();
+  const textureLoader = new THREE.TextureLoader(loadingManager);
+
+  loadingManager.onProgress = function(url, itemsLoaded, itemsTotal) {
+    const pct = Math.round((itemsLoaded / itemsTotal) * 100);
+    const fillEl = document.getElementById('loadingBarFill');
+    const textEl = document.getElementById('loadingPercent');
+    if (fillEl) fillEl.style.width = pct + '%';
+    if (textEl) textEl.textContent = pct + '%';
+  };
+
+  loadingManager.onLoad = function() {
+    const fillEl = document.getElementById('loadingBarFill');
+    const textEl = document.getElementById('loadingPercent');
+    if (fillEl) fillEl.style.width = '100%';
+    if (textEl) textEl.textContent = '100%';
+
+    const overlay = document.getElementById('loadingOverlay');
+    if (overlay) {
+      setTimeout(() => {
+        overlay.classList.add('fade-out');
+        setTimeout(() => {
+          overlay.style.display = 'none';
+        }, 650);
+      }, 250);
+    }
+  };
 
   // Audio Elements
   let cardAudio;
@@ -63,7 +90,7 @@
 
     // 2. Camera looking naturally at the upright standing 3D card
     camera = new THREE.PerspectiveCamera(40, width / height, 0.05, 100);
-    camera.position.set(VIEWS.uprightPerspective.pos.x, VIEWS.uprightPerspective.pos.y, VIEWS.uprightPerspective.pos.z);
+    camera.position.set(VIEWS.openedCenter.pos.x, VIEWS.openedCenter.pos.y, VIEWS.openedCenter.pos.z);
 
     // 3. Renderer with Linear Tone Mapping for 100% True-Color Reproduction
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance' });
@@ -87,7 +114,7 @@
     controls.maxPolarAngle = Math.PI - 0.05;
     controls.minAzimuthAngle = -Infinity; // Infinite horizontal 360° orbit
     controls.maxAzimuthAngle = Infinity;
-    controls.target.set(0, 3.5, 0);       // Center of standing card
+    controls.target.set(VIEWS.openedCenter.target.x, VIEWS.openedCenter.target.y, VIEWS.openedCenter.target.z);
 
     // 5. Studio Lighting
     setupLighting();
@@ -219,12 +246,12 @@
       return tex;
     }
 
-    const texFrontLeft   = loadCardTexture('textures_3d/card_front_left.png');
-    const texFrontRight  = loadCardTexture('textures_3d/card_front_right.png');
-    const texInsideCtr   = loadCardTexture('textures_3d/card_inside_center.png');
-    const texInsideLeft  = loadCardTexture('textures_3d/card_inside_left.png');
-    const texInsideRight = loadCardTexture('textures_3d/card_inside_right.png');
-    const texCardBack    = loadCardTexture('textures_3d/card_back.png');
+    const texFrontLeft   = loadCardTexture('textures_3d/card_front_left.jpg');
+    const texFrontRight  = loadCardTexture('textures_3d/card_front_right.jpg');
+    const texInsideCtr   = loadCardTexture('textures_3d/card_inside_center.jpg');
+    const texInsideLeft  = loadCardTexture('textures_3d/card_inside_left.jpg');
+    const texInsideRight = loadCardTexture('textures_3d/card_inside_right.jpg');
+    const texCardBack    = loadCardTexture('textures_3d/card_back.jpg');
 
     // Premium Cardstock Edge Material (warm ivory paper core)
     const paperEdgeMat = new THREE.MeshStandardMaterial({
@@ -350,9 +377,10 @@
     rightHinge.add(rightFlapGroup);
     cardGroup.add(rightHinge);
 
-    // Initial closed state
-    leftHinge.rotation.y = 0;
-    rightHinge.rotation.y = 0;
+    // Initial open state so photos, letters, and banners are immediately visible!
+    const initialOpenRad = (currentFoldDeg * Math.PI) / 180;
+    leftHinge.rotation.y = -initialOpenRad;
+    rightHinge.rotation.y = initialOpenRad;
   }
 
   // =========================================================================
@@ -645,9 +673,36 @@
   }
 
   // =========================================================================
-  // ROMANTIC MUSIC & LOVE SONGS PLAYLIST ENGINE (6 Curated Love Songs)
+  // ROMANTIC MUSIC & LOVE SONGS PLAYLIST ENGINE (7 Curated English Love Songs)
   // =========================================================================
   const LOVE_PLAYLIST = [
+    {
+      id: 'sailor',
+      title: 'Sailor Song',
+      artist: 'Gigi Perez',
+      subtitle: 'Viral Romantic Ballad',
+      file: 'audio/sailor_song.mp3',
+      duration: '3:29',
+      badge: 'Trending Love'
+    },
+    {
+      id: 'her',
+      title: 'Her',
+      artist: 'JVKE',
+      subtitle: 'Look at Her, She is a Masterpiece',
+      file: 'audio/her_jvke.mp3',
+      duration: '2:51',
+      badge: 'Romantic'
+    },
+    {
+      id: 'until_i_found_you',
+      title: 'Until I Found You',
+      artist: 'Stephen Sanchez',
+      subtitle: 'Soulful Vintage Romance',
+      file: 'audio/until_i_found_you.mp3',
+      duration: '2:58',
+      badge: 'Sweet & Pure'
+    },
     {
       id: 'perfect',
       title: 'Perfect',
@@ -658,46 +713,28 @@
       badge: 'Favorite'
     },
     {
-      id: 'kesariya',
-      title: 'Kesariya',
-      artist: 'Arijit Singh • Brahmāstra',
-      subtitle: 'Soulful Bollywood Romance',
-      file: 'audio/kesariya_arijit_singh.mp3',
-      duration: '4:25',
-      badge: 'Trending Love'
+      id: 'dandelions',
+      title: 'Dandelions',
+      artist: 'Ruth B.',
+      subtitle: 'Wishing on Every Dandelion',
+      file: 'audio/dandelions_ruth_b.mp3',
+      duration: '3:55',
+      badge: 'Dreamy'
     },
     {
-      id: 'until_i_found_you',
-      title: 'Until I Found You',
-      artist: 'Stephen Sanchez',
-      subtitle: 'Vintage Romantic Ballad',
-      file: 'audio/until_i_found_you.mp3',
-      duration: '2:58',
-      badge: 'Sweet & Pure'
-    },
-    {
-      id: 'tum_hi_ho',
-      title: 'Tum Hi Ho',
-      artist: 'Arijit Singh • Aashiqui 2',
-      subtitle: 'Heartfelt Passionate Ballad',
-      file: 'audio/tum_hi_ho_arijit_singh.mp3',
-      duration: '4:27',
-      badge: 'Heartfelt'
-    },
-    {
-      id: 'tere_bina',
-      title: 'Tere Bina',
-      artist: 'A.R. Rahman • Guru',
-      subtitle: 'Eternal Sufi Masterpiece',
-      file: 'audio/tere_bina_ar_rahman.mp3',
-      duration: '5:08',
-      badge: 'Soulful'
+      id: 'golden_hour',
+      title: 'Golden Hour',
+      artist: 'JVKE',
+      subtitle: 'She Got Glitter for Skin',
+      file: 'audio/golden_hour_jvke.mp3',
+      duration: '3:36',
+      badge: 'Golden'
     },
     {
       id: 'cant_help_falling_in_love',
       title: "Can't Help Falling in Love",
-      artist: 'Kina Grannis • Acoustic',
-      subtitle: 'Tender Acoustic Guitar',
+      artist: 'Kina Grannis',
+      subtitle: 'Acoustic Guitar Romance',
       file: 'audio/cant_help_falling_in_love.mp3',
       duration: '3:21',
       badge: 'Acoustic'

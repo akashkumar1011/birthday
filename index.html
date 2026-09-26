@@ -14,9 +14,22 @@
 </head>
 <body>
 
+  <!-- Luxury Glassmorphism 3D Asset Preloader -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-content">
+      <div class="loading-heart">💖</div>
+      <h2 class="loading-title">Siddhi's 20th Birthday</h2>
+      <p class="loading-subtitle">Loading 3D Greeting Card & Photos...</p>
+      <div class="loading-bar-wrap">
+        <div class="loading-bar-fill" id="loadingBarFill"></div>
+      </div>
+      <span class="loading-percent" id="loadingPercent">0%</span>
+    </div>
+  </div>
+
   <!-- Hidden Custom Audio File Input -->
   <input type="file" id="customAudioInput" accept="audio/*" style="display: none;">
-  <audio id="cardAudio" src="audio/perfect_ed_sheeran.mp3" loop preload="metadata"></audio>
+  <audio id="cardAudio" src="audio/sailor_song.mp3" loop preload="auto"></audio>
 
   <!-- Top Glassmorphism Navigation Bar -->
   <header class="top-nav">
@@ -37,9 +50,9 @@
       </button>
 
       <!-- 2. Physically Open / Close Card -->
-      <button class="nav-btn primary-btn" id="btnToggleOpen" title="Physically Open / Close Card (Press O)">
-        <span class="btn-icon" id="openIcon">📖</span>
-        <span id="openText">Open Card</span>
+      <button class="nav-btn primary-btn is-open" id="btnToggleOpen" title="Physically Open / Close Card (Press O)">
+        <span class="btn-icon" id="openIcon">📕</span>
+        <span id="openText">Close Card</span>
       </button>
 
       <!-- 3. Romantic Love Song Toggle -->
@@ -48,10 +61,10 @@
         <span id="musicText">Play Song</span>
       </button>
 
-      <!-- 4. Select from 6 Romantic Love Songs -->
-      <button class="nav-btn playlist-btn" id="btnOpenPlaylist" title="Choose from 6 Romantic Love Songs with Names (Press S)">
+      <!-- 4. Select from 7 English Romantic Love Songs -->
+      <button class="nav-btn playlist-btn" id="btnOpenPlaylist" title="Choose from 7 Iconic English Love Songs (Press S)">
         <span class="btn-icon">🎶</span>
-        <span id="playlistText">Love Songs (6)</span>
+        <span id="playlistText">Love Songs (7)</span>
       </button>
 
       <!-- 5. Upload Custom Song -->
@@ -154,10 +167,10 @@
     <!-- Clickable Song Details (Click to open playlist) -->
     <div class="music-info clickable" id="musicInfoClickable" title="Click to browse & change love songs">
       <div class="song-title-row">
-        <span class="song-title" id="songTitle">Perfect</span>
-        <span class="song-badge" id="songBadge">Track 1/6</span>
+        <span class="song-title" id="songTitle">Sailor Song</span>
+        <span class="song-badge" id="songBadge">Track 1/7</span>
       </div>
-      <span class="song-sub" id="songSub">Ed Sheeran • Click to Change Song ▾</span>
+      <span class="song-sub" id="songSub">Gigi Perez • Click to Change Song ▾</span>
     </div>
 
     <div class="music-actions">
@@ -176,13 +189,13 @@
           <span class="modal-heart">💖</span>
           <div>
             <h2 class="song-modal-title">Choose Romantic Love Song</h2>
-            <p class="song-modal-subtitle">6 Beautiful Love Songs for Siddhi's 20th Birthday</p>
+            <p class="song-modal-subtitle">7 Iconic English Love Songs for Siddhi's 20th Birthday</p>
           </div>
         </div>
         <button class="song-modal-close" id="btnCloseSongModal" title="Close (Esc)">✕</button>
       </div>
 
-      <!-- Scrollable list of 6 curated love songs -->
+      <!-- Scrollable list of 7 curated love songs -->
       <div class="song-list" id="songListContainer">
         <!-- Rendered dynamically by app.js -->
       </div>
