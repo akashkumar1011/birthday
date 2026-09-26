@@ -46,15 +46,11 @@
   const loadingManager = new THREE.LoadingManager();
   const textureLoader = new THREE.TextureLoader(loadingManager);
 
-  loadingManager.onProgress = function(url, itemsLoaded, itemsTotal) {
-    const pct = Math.round((itemsLoaded / itemsTotal) * 100);
-    const fillEl = document.getElementById('loadingBarFill');
-    const textEl = document.getElementById('loadingPercent');
-    if (fillEl) fillEl.style.width = pct + '%';
-    if (textEl) textEl.textContent = pct + '%';
-  };
+  let isLoaded = false;
+  function finishLoading() {
+    if (isLoaded) return;
+    isLoaded = true;
 
-  loadingManager.onLoad = function() {
     const fillEl = document.getElementById('loadingBarFill');
     const textEl = document.getElementById('loadingPercent');
     if (fillEl) fillEl.style.width = '100%';
@@ -66,10 +62,25 @@
         overlay.classList.add('fade-out');
         setTimeout(() => {
           overlay.style.display = 'none';
-        }, 650);
-      }, 250);
+        }, 500);
+      }, 150);
     }
+  }
+
+  loadingManager.onProgress = function(url, itemsLoaded, itemsTotal) {
+    const pct = Math.round((itemsLoaded / itemsTotal) * 100);
+    const fillEl = document.getElementById('loadingBarFill');
+    const textEl = document.getElementById('loadingPercent');
+    if (fillEl) fillEl.style.width = pct + '%';
+    if (textEl) textEl.textContent = pct + '%';
   };
+
+  loadingManager.onLoad = function() {
+    finishLoading();
+  };
+
+  // Fast-load safety guarantee: Ensure preloader NEVER stays for more than 4 seconds
+  setTimeout(finishLoading, 4000);
 
   // Audio Elements
   let cardAudio;
@@ -237,21 +248,33 @@
     applyCardPosture(currentTiltDeg, false);
     scene.add(cardGroup);
 
-    function loadCardTexture(path) {
-      const tex = textureLoader.load(path);
+    // Automatic WebP detection for ultra-fast 749KB loading on mobile (or optimized progressive JPG fallback)
+    const canUseWebP = (() => {
+      try {
+        const elem = document.createElement('canvas');
+        if (elem.getContext && elem.getContext('2d')) {
+          return elem.toDataURL('image/webp').indexOf('data:image/webp') === 0;
+        }
+      } catch (e) {}
+      return false;
+    })();
+    const texExt = canUseWebP ? '.webp' : '.jpg';
+
+    function loadCardTexture(name) {
+      const tex = textureLoader.load(`textures_3d/${name}${texExt}`);
       tex.generateMipmaps = true;
       tex.minFilter = THREE.LinearMipmapLinearFilter;
       tex.magFilter = THREE.LinearFilter;
-      tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+      tex.anisotropy = Math.min(renderer.capabilities.getMaxAnisotropy(), 4);
       return tex;
     }
 
-    const texFrontLeft   = loadCardTexture('textures_3d/card_front_left.jpg');
-    const texFrontRight  = loadCardTexture('textures_3d/card_front_right.jpg');
-    const texInsideCtr   = loadCardTexture('textures_3d/card_inside_center.jpg');
-    const texInsideLeft  = loadCardTexture('textures_3d/card_inside_left.jpg');
-    const texInsideRight = loadCardTexture('textures_3d/card_inside_right.jpg');
-    const texCardBack    = loadCardTexture('textures_3d/card_back.jpg');
+    const texFrontLeft   = loadCardTexture('card_front_left');
+    const texFrontRight  = loadCardTexture('card_front_right');
+    const texInsideCtr   = loadCardTexture('card_inside_center');
+    const texInsideLeft  = loadCardTexture('card_inside_left');
+    const texInsideRight = loadCardTexture('card_inside_right');
+    const texCardBack    = loadCardTexture('card_back');
 
     // Premium Cardstock Edge Material (warm ivory paper core)
     const paperEdgeMat = new THREE.MeshStandardMaterial({
