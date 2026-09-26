@@ -10,7 +10,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="style.css">
+  <!-- Anti-cache headers for instant mobile updates -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+
+  <link rel="stylesheet" href="style.css?v=20260926_closed_v3">
 </head>
 <body>
 
@@ -233,7 +238,7 @@
   <script src="libs/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   
-  <!-- Card Application Engine -->
-  <script src="app.js"></script>
+  <!-- Card Application Engine (Cache-Busted for Instant Mobile Updates) -->
+  <script src="app.js?v=20260926_closed_v3"></script>
 </body>
 </html>
